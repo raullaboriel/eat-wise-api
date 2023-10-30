@@ -1,60 +1,35 @@
-import { Body, Controller, Delete, Get, HttpException, Post, Put } from '@nestjs/common';
-import { CreateRecipeDto, RecipesDto } from './recipes.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Recipe } from './recipes.interfaces';
+import { Controller, Get, Post, Delete, Put, Param, Body, UseGuards } from '@nestjs/common';
+import { RecipesService } from './recipes.service';
+import { CreateRecipeDto, UpdateRecipeDto } from './dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('recipes')
 export class RecipesController {
-    constructor(@InjectModel('Recipes') private readonly recipeModel: Model<Recipe>) { }
+    constructor(private recipesService: RecipesService) { };
 
     @Get()
-    public async getRecipes() {
-        console.log('get all');
-
-        const recipes = await this.recipeModel.find().exec();
-
-        return recipes;
+    @UseGuards(AuthGuard)
+    getRecipes() {
+        return this.recipesService.findAll();
     }
 
-    @Get(':_id')
-    public async getRecipe(_id: string) {
-        console.log('get one');
-        const recipe = await this.recipeModel.findOne({ _id }).exec();
-
-        if (!recipe) {
-            throw new HttpException('Recipe not found', 404);
-        }
-
-        return recipe;
+    @Get(':id')
+    getRecipeById(@Param('id') id: string) {
+        return this.recipesService.findById(id);
     }
 
     @Post()
-    public async addRecipe(@Body() createRecipeDto: CreateRecipeDto) {
-        const newRecipe = new this.recipeModel(createRecipeDto);
-
-        return await newRecipe.save();
+    createRecipe(@Body() newRecipe: CreateRecipeDto) {
+        return this.recipesService.create(newRecipe);
     }
 
-    @Put(':_id')
-    public async updateRecipe(_id: string, newRecipe: RecipesDto) {
-        const recipe = await this.recipeModel.updateOne({ _id }, newRecipe).exec();
-
-        if (!recipe) {
-            throw new HttpException('Recipe not found', 404);
-        }
-
-        return recipe;
+    @Delete(':id')
+    deleteRecipe(@Param('id') id: string) {
+        return this.recipesService.deleteById(id);
     }
 
-    @Delete(':_id')
-    public async deleteRecipe(_id: string) {
-        const recipe = await this.recipeModel.deleteOne({ _id }).exec();
-
-        if (recipe.deletedCount === 0) {
-            throw new HttpException('Recipe not found', 404);
-        }
-
-        return recipe;
+    @Put(':id')
+    updateRecipe(@Param('id') id: string, @Body() updatedRecipe: UpdateRecipeDto) {
+        return this.recipesService.updateById(id, updatedRecipe);
     }
 }
