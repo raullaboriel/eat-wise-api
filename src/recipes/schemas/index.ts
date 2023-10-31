@@ -1,5 +1,4 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Ingredient } from 'src/ingredients/interfaces';
 
 @Schema({
     timestamps: true
@@ -14,7 +13,7 @@ export class Recipe {
     @Prop({
         required: true,
     })
-    ingredients: Ingredient[];
+    ingredients: string[];
 }
 
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);

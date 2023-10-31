@@ -3,12 +3,12 @@ import { RecipesService } from './recipes.service';
 import { CreateRecipeDto, UpdateRecipeDto } from './dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('recipes')
 export class RecipesController {
     constructor(private recipesService: RecipesService) { };
 
     @Get()
-    @UseGuards(AuthGuard)
     getRecipes() {
         return this.recipesService.findAll();
     }

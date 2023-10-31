@@ -16,8 +16,17 @@ export class AuthController {
 
         const { accessToken } = await this.authService.signIn(signInDto.password, signInDto.email, signInDto.username);
 
-        res.cookie('eat_wise_access_token', accessToken, { httpOnly: true });
+        const oneYearInMilliseconds = 60 * 60 * 24 * 365 * 1000;
+        res.cookie('eat_wise_access_token', accessToken, { httpOnly: true, expires: new Date(Date.now() + oneYearInMilliseconds) });
 
         return { message: 'Login successful' };
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @Post('logout')
+    async logout(@Res({ passthrough: true }) res: Response) {
+        res.clearCookie('eat_wise_access_token');
+
+        return { message: 'Logout successful' };
     }
 }
