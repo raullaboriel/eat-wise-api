@@ -8,12 +8,7 @@ export class Recipe {
         trim: true,
         unique: true,
     })
-    name: string | undefined;
-
-    @Prop({
-        required: true,
-    })
-    ingredients: string[];
+    name: string;
 }
 
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);

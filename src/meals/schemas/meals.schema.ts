@@ -6,15 +6,15 @@ import { Document } from "mongoose";
 })
 export class Meal extends Document {
     @Prop({
-        required: true
-    })
-    ingredients: string[];
-
-    @Prop({
         required: true,
         default: new Date()
     })
     date: Date;
+
+    @Prop({
+        required: true
+    })
+    userId: string;
 }
 
 export const MealSchema = SchemaFactory.createForClass(Meal);

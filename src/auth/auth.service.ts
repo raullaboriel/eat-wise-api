@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { SuccessSignIn } from './interfaces/auth-interfaces';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -29,5 +30,17 @@ export class AuthService {
         return {
             accessToken: await this.jwtService.signAsync(payload)
         }
+    }
+
+    async extractPayload(request: Request): Promise<{ sub: string, username: string }> {
+        const cookieName = 'eat_wise_access_token';
+        const cookies = request.headers.cookie;
+
+        const cookieList = cookies.split('; ');
+        const desiredCookie = cookieList.find((cookie: string) => cookie.startsWith(`${cookieName}=`));
+        const token = desiredCookie.split('=')[1]; // Extract the value of the cookie
+
+        const decoded = this.jwtService.verify(token);
+        return decoded;
     }
 }

@@ -3,10 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RecipesModule } from './recipes/recipes.module';
-import { IngredientsModule } from './ingredients/ingredients.module';
+import { RecipeIngredientsModule } from './recipe-ingredients/recipe-ingredients.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MealsModule } from './meals/meals.module';
+import { GendersModule } from './genders/genders.module';
+import { MealIngredientsModule } from './meal-ingredients/meal-ingredients.module';
 
 @Module({
   imports: [
@@ -17,10 +19,12 @@ import { MealsModule } from './meals/meals.module';
       }
     ),
     RecipesModule,
-    IngredientsModule,
+    RecipeIngredientsModule,
     UsersModule,
     AuthModule,
     MealsModule,
+    GendersModule,
+    MealIngredientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
