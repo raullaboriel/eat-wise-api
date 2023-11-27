@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RecipesModule } from './recipes/recipes.module';
-import { RecipeIngredientsModule } from './recipe-ingredients/recipe-ingredients.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MealsModule } from './meals/meals.module';
@@ -18,8 +16,6 @@ import { MealIngredientsModule } from './meal-ingredients/meal-ingredients.modul
         dbName: 'eat-wise',
       }
     ),
-    RecipesModule,
-    RecipeIngredientsModule,
     UsersModule,
     AuthModule,
     MealsModule,
