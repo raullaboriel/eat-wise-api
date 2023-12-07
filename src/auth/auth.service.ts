@@ -19,7 +19,7 @@ export class AuthService {
         const user = await this.usersService.findByUsernameOrEmail(username, email);
 
         if (!user || user.password !== pass) {
-            throw new UnauthorizedException('Invalid credentials');
+            throw new UnauthorizedException('Usuario o contraseña incorrectos.');
         }
 
         const payload = {
@@ -28,7 +28,8 @@ export class AuthService {
         };
 
         return {
-            accessToken: await this.jwtService.signAsync(payload)
+            accessToken: await this.jwtService.signAsync(payload),
+            user
         }
     }
 

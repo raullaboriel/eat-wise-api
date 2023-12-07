@@ -14,12 +14,12 @@ export class AuthController {
             throw new BadRequestException('Email or username is required');
         }
 
-        const { accessToken } = await this.authService.signIn(signInDto.password, signInDto.email, signInDto.username);
+        const { accessToken, user } = await this.authService.signIn(signInDto.password, signInDto.email, signInDto.username);
 
         const oneYearInMilliseconds = 60 * 60 * 24 * 365 * 1000;
         res.cookie('eat_wise_access_token', accessToken, { httpOnly: true, expires: new Date(Date.now() + oneYearInMilliseconds) });
 
-        return { message: 'Login successful' };
+        return { message: 'Login successful', user };
     }
 
     @HttpCode(HttpStatus.OK)

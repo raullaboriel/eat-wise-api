@@ -18,6 +18,12 @@ export class MealsService {
         return await meals;
     }
 
+    async findById(mealId: string, userId: string): Promise<Meal> {
+        const meal = await this.mealModel.findOne({ _id: mealId, userId });
+
+        return meal;
+    }
+
     async create(newMeal: CreateMealDto): Promise<Meal> {
         const createdMeal = new this.mealModel(newMeal);
 
